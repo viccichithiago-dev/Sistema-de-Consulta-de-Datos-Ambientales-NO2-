@@ -1,7 +1,5 @@
 ﻿
 
-using System.Windows.Forms;
-
 namespace tpfinal
 {
     partial class Form1
@@ -55,12 +53,6 @@ namespace tpfinal
             this.button1 = new System.Windows.Forms.Button();
             this.caras = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.panel_pre = new System.Windows.Forms.Panel();
-            this.btn_preorden = new System.Windows.Forms.Button();
-            this.panel_in = new System.Windows.Forms.Panel();
-            this.btn_inorden = new System.Windows.Forms.Button();
-            this.panel_post = new System.Windows.Forms.Panel();
-            this.btn_postorden = new System.Windows.Forms.Button();
             this.barra.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnclose)).BeginInit();
             this.controles.SuspendLayout();
@@ -104,12 +96,6 @@ namespace tpfinal
             this.controles.Controls.Add(this.btn_consulta2);
             this.controles.Controls.Add(this.panel3);
             this.controles.Controls.Add(this.btn_consulta1);
-            this.controles.Controls.Add(this.panel_pre);
-            this.controles.Controls.Add(this.btn_preorden);
-            this.controles.Controls.Add(this.panel_in);
-            this.controles.Controls.Add(this.btn_inorden);
-            this.controles.Controls.Add(this.panel_post);
-            this.controles.Controls.Add(this.btn_postorden);
             this.controles.Controls.Add(this.panel1);
             this.controles.Controls.Add(this.button2);
             this.controles.Controls.Add(this.panel4);
@@ -144,7 +130,7 @@ namespace tpfinal
             this.otroOp.Name = "otroOp";
             this.otroOp.Size = new System.Drawing.Size(60, 25);
             this.otroOp.TabIndex = 26;
-            this.otroOp.Text = "Orden";
+            this.otroOp.Text = "Otro";
             this.otroOp.UseVisualStyleBackColor = true;
             // 
             // heapOp
@@ -211,81 +197,6 @@ namespace tpfinal
             this.btn_consulta3.Text = "Consulta 3";
             this.btn_consulta3.UseVisualStyleBackColor = false;
             this.btn_consulta3.Click += new System.EventHandler(this.btn_consulta3_Click);
-            // 
-            // panel_pre
-            // 
-            this.panel_pre.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
-            this.panel_pre.Location = new System.Drawing.Point(113, 607);
-            this.panel_pre.Name = "panel_pre";
-            this.panel_pre.Size = new System.Drawing.Size(10, 30);
-            this.panel_pre.TabIndex = 26;
-            // 
-            // btn_preorden
-            // 
-            this.btn_preorden.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.btn_preorden.FlatAppearance.BorderSize = 0;
-            this.btn_preorden.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
-            this.btn_preorden.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_preorden.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_preorden.ForeColor = System.Drawing.Color.White;
-            this.btn_preorden.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_preorden.Location = new System.Drawing.Point(117, 607);
-            this.btn_preorden.Name = "btn_preorden";
-            this.btn_preorden.Size = new System.Drawing.Size(197, 30);
-            this.btn_preorden.TabIndex = 27;
-            this.btn_preorden.Text = "Preorden";
-            this.btn_preorden.UseVisualStyleBackColor = false;
-            this.btn_preorden.Click += new System.EventHandler(this.btn_preorden_Click);
-            // 
-            // panel_in
-            // 
-            this.panel_in.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
-            this.panel_in.Location = new System.Drawing.Point(113, 643);
-            this.panel_in.Name = "panel_in";
-            this.panel_in.Size = new System.Drawing.Size(10, 30);
-            this.panel_in.TabIndex = 28;
-            // 
-            // btn_inorden
-            // 
-            this.btn_inorden.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.btn_inorden.FlatAppearance.BorderSize = 0;
-            this.btn_inorden.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
-            this.btn_inorden.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_inorden.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_inorden.ForeColor = System.Drawing.Color.White;
-            this.btn_inorden.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_inorden.Location = new System.Drawing.Point(117, 643);
-            this.btn_inorden.Name = "btn_inorden";
-            this.btn_inorden.Size = new System.Drawing.Size(197, 30);
-            this.btn_inorden.TabIndex = 29;
-            this.btn_inorden.Text = "Inorden";
-            this.btn_inorden.UseVisualStyleBackColor = false;
-            this.btn_inorden.Click += new System.EventHandler(this.btn_inorden_Click);
-            // 
-            // panel_post
-            // 
-            this.panel_post.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
-            this.panel_post.Location = new System.Drawing.Point(113, 679);
-            this.panel_post.Name = "panel_post";
-            this.panel_post.Size = new System.Drawing.Size(10, 30);
-            this.panel_post.TabIndex = 30;
-            // 
-            // btn_postorden
-            // 
-            this.btn_postorden.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.btn_postorden.FlatAppearance.BorderSize = 0;
-            this.btn_postorden.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
-            this.btn_postorden.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_postorden.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_postorden.ForeColor = System.Drawing.Color.White;
-            this.btn_postorden.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_postorden.Location = new System.Drawing.Point(117, 679);
-            this.btn_postorden.Name = "btn_postorden";
-            this.btn_postorden.Size = new System.Drawing.Size(197, 30);
-            this.btn_postorden.TabIndex = 31;
-            this.btn_postorden.Text = "Postorden";
-            this.btn_postorden.UseVisualStyleBackColor = false;
-            this.btn_postorden.Click += new System.EventHandler(this.btn_postorden_Click);
             // 
             // panel5
             // 
@@ -486,11 +397,5 @@ namespace tpfinal
         private GroupBox Metodo;
         private RadioButton otroOp;
         private RadioButton heapOp;
-        private Panel panel_pre;
-        private Button btn_preorden;
-        private Panel panel_in;
-        private Button btn_inorden;
-        private Panel panel_post;
-        private Button btn_postorden;
     }
 }

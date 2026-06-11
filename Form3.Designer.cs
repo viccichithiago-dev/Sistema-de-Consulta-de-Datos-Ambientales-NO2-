@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace tpfinal
+﻿namespace tpfinal
 {
     partial class Consultas
     {
@@ -92,12 +90,8 @@ namespace tpfinal
             // 
             // txt_datos
             // 
-            this.txt_datos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.txt_datos.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txt_datos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(200)))), ((int)(((byte)(100)))));
             this.txt_datos.Location = new System.Drawing.Point(12, 21);
             this.txt_datos.Name = "txt_datos";
-            this.txt_datos.ReadOnly = true;
             this.txt_datos.Size = new System.Drawing.Size(776, 431);
             this.txt_datos.TabIndex = 3;
             this.txt_datos.Text = "";
@@ -139,7 +133,7 @@ namespace tpfinal
         private Panel barra;
         private PictureBox btnclose;
         private TextBox textBox1;
-        private Form1 _parentForm;
+        private Form1 Parent;
         private Panel caras;
         private RichTextBox txt_datos;
         private Button button2;

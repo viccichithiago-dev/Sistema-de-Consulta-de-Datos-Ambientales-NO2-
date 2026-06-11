@@ -1,64 +1,39 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 
-namespace tpfinal
+namespace tp1
 {
-    public class Cola<T>
-    {
-        private T[] buffer;
-        private int head;
-        private int tail;
-        private int count;
-        private const int capacidadInicial = 256;
+	public class Cola<T>
+	{
 
-        public Cola()
-        {
-            buffer = new T[capacidadInicial];
-        }
-
-        public void encolar(T elem)
-        {
-            if (count == buffer.Length)
-            {
-                Redimensionar(buffer.Length * 2);
-            }
-            buffer[tail] = elem;
-            tail = (tail + 1) % buffer.Length;
-            count++;
-        }
-
-        public T desencolar()
-        {
-            T resultado = buffer[head];
-            head = (head + 1) % buffer.Length;
-            count--;
-            return resultado;
-        }
-
-        public T tope()
-        {
-            return buffer[head];
-        }
-
-        public bool esVacia()
-        {
-            return count == 0;
-        }
-
-        public int cantidadElementos()
-        {
-            return count;
-        }
-
-        private void Redimensionar(int nuevaCapacidad)
-        {
-            T[] nuevo = new T[nuevaCapacidad];
-            for (int i = 0; i < count; i++)
-            {
-                nuevo[i] = buffer[(head + i) % buffer.Length];
-            }
-            buffer = nuevo;
-            head = 0;
-            tail = count;
-        }
-    }
+		
+		private List<T> datos = new List<T>();
+		
+		public void encolar(T elem)
+		{
+			this.datos.Add(elem);
+		}
+		
+		public T desencolar()
+		{
+			T temp = this.datos[0];
+			this.datos.RemoveAt(0);
+			return temp;
+		}
+		
+		public T tope()
+		{
+			return this.datos[0];
+		}
+		
+		public bool esVacia()
+		{
+			return this.datos.Count == 0;
+		}
+		
+		public int cantidadElementos()
+		{
+			return this.datos.Count;
+		}
+	}
 }

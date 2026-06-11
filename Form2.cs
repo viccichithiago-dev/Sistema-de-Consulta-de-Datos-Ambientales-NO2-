@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-
+using tp1;
 using Microsoft.VisualBasic.FileIO;
 
 namespace tpfinal
@@ -26,6 +26,7 @@ namespace tpfinal
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
+            Estrategia estrategia = new Estrategia();
             progressBar1.Maximum = Utils.lineCount;
             progressBar1.Step = 1;
             using (TextFieldParser parser = new TextFieldParser(@Utils.get_patron()))
@@ -35,18 +36,16 @@ namespace tpfinal
                 parser.SetDelimiters(";");
                 string[] columns = parser.ReadFields();
                 string[] fields = parser.ReadFields();
-                string geoTipo = Utils.RemoveSpecialCharacters(fields[2]);
-                string lugar = Utils.RemoveSpecialCharacters(fields[3]);
-                string periodo = Utils.RemoveSpecialCharacters(fields[4]);
-                Backend.datos.Add(new DatoCSV { geoTipo = geoTipo, lugar = lugar, periodo = periodo });
+                string titulo = Utils.RemoveSpecialCharacters(fields[2]);
+                string descript = Utils.RemoveSpecialCharacters(fields[3]) + "-" + Utils.RemoveSpecialCharacters(fields[4]);
+                Backend.datos.Add(titulo+"-"+descript);
                 progressBar1.PerformStep();
                 while (!parser.EndOfData)
                 {
                     fields = parser.ReadFields();
-                    geoTipo = Utils.RemoveSpecialCharacters(fields[2]);
-                    lugar = Utils.RemoveSpecialCharacters(fields[3]);
-                    periodo = Utils.RemoveSpecialCharacters(fields[4]);
-                    Backend.datos.Add(new DatoCSV { geoTipo = geoTipo, lugar = lugar, periodo = periodo });
+                    titulo = Utils.RemoveSpecialCharacters(fields[2]);
+                    descript = Utils.RemoveSpecialCharacters(fields[3]) + "-" + Utils.RemoveSpecialCharacters(fields[4]);
+                    Backend.datos.Add(titulo+"-"+descript);
                     progressBar1.PerformStep();
                 }
             }

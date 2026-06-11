@@ -17,7 +17,6 @@ namespace tpfinal
         {
             this.ocurrencia = ocurrencia;
             this.texto = texto;
-            this.descripcion = "";
         }
 
         public Dato(int ocurrencia, string texto, string descripcion)

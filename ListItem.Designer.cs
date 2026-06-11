@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace tpfinal
+﻿namespace tpfinal
 {
     partial class ListItem
     {

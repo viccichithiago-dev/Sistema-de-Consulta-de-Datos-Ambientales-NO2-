@@ -21,14 +21,14 @@ namespace tpfinal
         public Consultas(Form1 form1, string datos)
         {
             InitializeComponent();
-            this._parentForm = form1;
+            this.Parent = form1;
             this.txt_datos.Text = datos;
         }
 
         private void btnclose_Click(object sender, EventArgs e)
         {
             this.Close();
-            this._parentForm.Show();
+            this.Parent.Show();
         }
 
 
@@ -53,7 +53,7 @@ namespace tpfinal
         private void button2_Click_1(object sender, EventArgs e)
         {
             this.Close();
-            this._parentForm.Show();
+            this.Parent.Show();
         }
     }
 }

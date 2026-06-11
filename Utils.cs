@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.VisualBasic.FileIO;
-
+using tp1;
 
 namespace tpfinal
 {
@@ -45,7 +45,7 @@ namespace tpfinal
             //string str = str_input.Replace(' ', '_');
             foreach (char c in str)
             {
-                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == ' ' || c == '-')
+                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '.' || c == '_' || c == ' ')
                 {
                     sb.Append(c);
                 }

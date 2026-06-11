@@ -1,7 +1,4 @@
-
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
+using tp1;
 using tpfinal;
 using System.Runtime.InteropServices;
 
@@ -73,38 +70,20 @@ namespace tpfinal
 
         private void btn_consulta1_Click(object sender, EventArgs e)
         {
-            string resultado = Backend.Consulta1();
+            string resultado = Backend.todasLasPredicciones();
             this.mostrarConsulta(resultado);
 
         }
 
         private void btn_consulta2_Click(object sender, EventArgs e)
         {
-            string resultado = Backend.Consulta2();
+            string resultado = Backend.caminoAPrediccion();
             this.mostrarConsulta(resultado);
         }
 
         private void btn_consulta3_Click(object sender, EventArgs e)
         {
-            string resultado = Backend.Consulta3();
-            this.mostrarConsulta(resultado);
-        }
-
-        private void btn_preorden_Click(object sender, EventArgs e)
-        {
-            string resultado = Backend.preorden();
-            this.mostrarConsulta(resultado);
-        }
-
-        private void btn_inorden_Click(object sender, EventArgs e)
-        {
-            string resultado = Backend.inorden();
-            this.mostrarConsulta(resultado);
-        }
-
-        private void btn_postorden_Click(object sender, EventArgs e)
-        {
-            string resultado = Backend.postorden();
+            string resultado = Backend.aProfundidad();
             this.mostrarConsulta(resultado);
         }
 

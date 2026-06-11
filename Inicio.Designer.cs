@@ -1,7 +1,5 @@
 ﻿
 
-using System.Windows.Forms;
-
 namespace tpfinal
 {
     partial class Inicio

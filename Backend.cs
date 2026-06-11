@@ -1,22 +1,14 @@
 using System;
-using System.Collections.Generic;
+using tp1;
 
 namespace tpfinal
-{
-    public struct DatoCSV
-    {
-        public string geoTipo;
-        public string lugar;
-        public string periodo;
-    }
-
+{ 
     public class Backend
     {
-        public static List<DatoCSV> datos = new List<DatoCSV>();
+        public static List<string> datos = new List<string>();
         public static List<Dato> nodosArbol = new List<Dato>();
         public static List<int> padres = new List<int>();
         public static int raizIdx = -1;
-        public static Graph<Dato> grafo = new Graph<Dato>();
 
         public static void armarArbolDesdeDatos()
         {
@@ -38,10 +30,13 @@ namespace tpfinal
 			
             for (int fila = 0; fila < datos.Count; fila++)
             {
-                var registro = datos[fila];
-                string geoTipo = registro.geoTipo;
-                string lugar = registro.lugar;
-                string periodo = registro.periodo;
+                string registro = datos[fila];
+                string[] partes = registro.Split(new char[] { '-' }, 3);
+                if (partes.Length < 3) continue;
+				
+                string geoTipo = partes[0].Trim();
+                string lugar = partes[1].Trim();
+                string periodo = partes[2].Trim();
 				
                 string cGeo = "GT_" + geoTipo;
                 string cLug = "LP_" + geoTipo + "_" + lugar;
@@ -80,16 +75,12 @@ namespace tpfinal
                 int idxPeriodo = -1;
                 if (!indices.ContainsKey(cPer))
                 {
-                    Dato nPer = new Dato(0, geoTipo + " - " + periodo + " - " + lugar, "Medicion en " + lugar);
+                    Dato nPer = new Dato(0, periodo, "Medicion en " + lugar);
                     nodosArbol.Add(nPer);
                     padres.Add(idxLugar);
                     idxPeriodo = cont;
                     indices.Add(cPer, cont);
                     cont++;
-                }
-                else
-                {
-                    idxPeriodo = indices[cPer];
                 }
 				
                 if (idxPeriodo >= 0)
@@ -97,65 +88,21 @@ namespace tpfinal
                     nodosArbol[idxPeriodo].ocurrencia++;
                 }
             }
-
-            // Construir grafo con lista de adyacencia a partir de las listas paralelas
-            grafo = new Graph<Dato>();
-            foreach (var nodo in nodosArbol)
-                grafo.AddVertex(nodo);
-
-            for (int i = 0; i < padres.Count; i++)
-            {
-                if (padres[i] != -1)
-                    grafo.AddEdge(padres[i], i);
-            }
         }
 
-        public static List<string> ObtenerPredicciones()
+        public static String aProfundidad()
         {
-            var resultado = new List<string>();
-            var g = grafo;
-            for (int i = 0; i < g.Count; i++)
-            {
-                if (g.EsHoja(i) && nodosArbol[i].ocurrencia > 0)
-                {
-                    for (int r = 0; r < nodosArbol[i].ocurrencia; r++)
-                        resultado.Add(nodosArbol[i].texto);
-                }
-            }
-            return resultado;
+            return (new Estrategia()).Consulta3(nodosArbol, padres, raizIdx);
         }
 
-        public static String Consulta1()
+        public static String caminoAPrediccion()
         {
-            var preds = ObtenerPredicciones();
-            return Estrategia.Consulta1(preds);
+            return (new Estrategia()).Consulta2(nodosArbol, padres, raizIdx);
         }
 
-        public static String Consulta2()
+        public static String todasLasPredicciones()
         {
-            var preds = ObtenerPredicciones();
-            return Estrategia.Consulta2(preds);
-        }
-
-        public static String Consulta3()
-        {
-            var preds = ObtenerPredicciones();
-            return Estrategia.Consulta3(preds);
-        }
-
-        public static String preorden()
-        {
-            return Estrategia.RecorridoPreorden(nodosArbol, padres, raizIdx);
-        }
-
-        public static String inorden()
-        {
-            return Estrategia.RecorridoInorden(nodosArbol, padres, raizIdx);
-        }
-
-        public static String postorden()
-        {
-            return Estrategia.RecorridoPostorden(nodosArbol, padres, raizIdx);
+            return (new Estrategia()).Consulta1(nodosArbol, padres, raizIdx);
         }
 
         public static void buscar(bool heapOP, int cantidad, List<Dato> collected)
@@ -163,11 +110,11 @@ namespace tpfinal
 			
             if (heapOP)
             {
-                Estrategia.BuscarConHeap(nodosArbol, padres, cantidad, collected);
+                (new Estrategia()).BuscarConHeap(nodosArbol, padres, cantidad, collected);
             }
             else
             {
-                Estrategia.BuscarConOrden(nodosArbol, padres, cantidad, collected);
+                (new Estrategia()).BuscarConOtro(nodosArbol, padres, cantidad, collected);
             }
 			
         }
