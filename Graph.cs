@@ -1,178 +1,223 @@
 using System;
 using System.Collections.Generic;
+using tp1;
 
 namespace tpfinal
 {
-    public class Vertex<T>
+    public class Vertice
     {
-        public int Id { get; set; }
-        public bool Visitado { get; set; }
-        public T Data { get; set; }
+        public int Id;
+        public bool Visitado;
+        public Object Data;
     }
 
-    public class Edge
+    public class Arista
     {
-        public int Origen { get; set; }
-        public int Destino { get; set; }
-        public double Peso { get; set; }
+        public int Origen;
+        public int Destino;
+        public double Peso;
     }
 
-    public class Graph<T>
+    public class Grafo
     {
-        public List<Vertex<T>> Vertices { get; private set; }
-        public List<List<Edge>> AdjList { get; private set; }
-        public List<int> ParentIndex { get; private set; }
+        public List<Vertice> vertices;
+        public List<List<Arista>> listaAdyacencia;
+        public List<int> indicePadre;
 
-        public Graph()
+        public Grafo()
         {
-            Vertices = new List<Vertex<T>>();
-            AdjList = new List<List<Edge>>();
-            ParentIndex = new List<int>();
+            vertices = new List<Vertice>();
+            listaAdyacencia = new List<List<Arista>>();
+            indicePadre = new List<int>();
         }
 
-        public int AddVertex(T data)
+        public int agregarVertice(Object data)
         {
-            int id = Vertices.Count;
-            Vertices.Add(new Vertex<T> { Id = id, Data = data });
-            AdjList.Add(new List<Edge>());
-            ParentIndex.Add(-1);
+            int id = vertices.Count;
+            Vertice v = new Vertice();
+            v.Id = id;
+            v.Data = data;
+            vertices.Add(v);
+            listaAdyacencia.Add(new List<Arista>());
+            indicePadre.Add(-1);
             return id;
         }
 
-        public void AddEdge(int from, int to, double peso = 0)
+        public void agregarArista(int desde, int hasta, double peso)
         {
-            AdjList[from].Add(new Edge { Origen = from, Destino = to, Peso = peso });
-            ParentIndex[to] = from;
+            Arista a = new Arista();
+            a.Origen = desde;
+            a.Destino = hasta;
+            a.Peso = peso;
+            listaAdyacencia[desde].Add(a);
+            indicePadre[hasta] = desde;
         }
 
-        public int GetParent(int idx)
+        public int obtenerPadre(int idx)
         {
-            return ParentIndex[idx];
+            return indicePadre[idx];
         }
 
-        public int GetDepth(int idx)
+        public int obtenerProfundidad(int idx)
         {
             int nivel = 0;
             int actual = idx;
-            while (ParentIndex[actual] != -1)
+            while (indicePadre[actual] != -1)
             {
                 nivel++;
-                actual = ParentIndex[actual];
+                actual = indicePadre[actual];
             }
             return nivel;
         }
 
-        public List<int> GetChildren(int idx)
+        public List<int> obtenerHijos(int idx)
         {
-            var hijos = new List<int>(AdjList[idx].Count);
-            foreach (var e in AdjList[idx])
-                hijos.Add(e.Destino);
+            List<int> hijos = new List<int>();
+            for (int i = 0; i < listaAdyacencia[idx].Count; i++)
+            {
+                hijos.Add(listaAdyacencia[idx][i].Destino);
+            }
             return hijos;
         }
 
-        public bool EsHoja(int idx)
+        public bool esHoja(int idx)
         {
-            return AdjList[idx].Count == 0;
+            return listaAdyacencia[idx].Count == 0;
         }
 
-        public int Count
+        public int cantidadVertices()
         {
-            get { return Vertices.Count; }
+            return vertices.Count;
         }
 
-        public void ResetVisitados()
+        public void resetearVisitados()
         {
-            foreach (var v in Vertices)
-                v.Visitado = false;
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                vertices[i].Visitado = false;
+            }
         }
 
-        public void BFS(int start, Action<Vertex<T>> visitor)
+        public void BFS(int inicio, List<int> recolectados)
         {
-            ResetVisitados();
+            resetearVisitados();
             Cola<int> cola = new Cola<int>();
-            cola.encolar(start);
-            Vertices[start].Visitado = true;
+            cola.encolar(inicio);
+            vertices[inicio].Visitado = true;
 
             while (cola.cantidadElementos() > 0)
             {
                 int actual = cola.desencolar();
-                visitor(Vertices[actual]);
+                recolectados.Add(actual);
 
-                foreach (var edge in AdjList[actual])
+                List<Arista> aristas = listaAdyacencia[actual];
+                for (int i = 0; i < aristas.Count; i++)
                 {
-                    if (!Vertices[edge.Destino].Visitado)
+                    int destino = aristas[i].Destino;
+                    if (!vertices[destino].Visitado)
                     {
-                        Vertices[edge.Destino].Visitado = true;
-                        cola.encolar(edge.Destino);
+                        vertices[destino].Visitado = true;
+                        cola.encolar(destino);
                     }
                 }
             }
         }
 
-        public void DFS(int start, Action<Vertex<T>> visitor)
+        public void DFS(int inicio, List<int> recolectados)
         {
-            ResetVisitados();
-            DFS_Recursivo(start, visitor);
+            resetearVisitados();
+            dfsRecursivo(inicio, recolectados);
         }
 
-        private void DFS_Recursivo(int idx, Action<Vertex<T>> visitor)
+        private void dfsRecursivo(int idx, List<int> recolectados)
         {
-            Vertices[idx].Visitado = true;
-            visitor(Vertices[idx]);
+            vertices[idx].Visitado = true;
+            recolectados.Add(idx);
 
-            foreach (var edge in AdjList[idx])
+            List<Arista> aristas = listaAdyacencia[idx];
+            for (int i = 0; i < aristas.Count; i++)
             {
-                if (!Vertices[edge.Destino].Visitado)
+                int destino = aristas[i].Destino;
+                if (!vertices[destino].Visitado)
                 {
-                    DFS_Recursivo(edge.Destino, visitor);
+                    dfsRecursivo(destino, recolectados);
                 }
             }
         }
 
-        public void Preorden(int idx, Action<Vertex<T>> visitor)
+        public void preorden(int idx, List<int> recolectados)
         {
-            visitor(Vertices[idx]);
-            foreach (var edge in AdjList[idx])
-                Preorden(edge.Destino, visitor);
-        }
-
-        public void Inorden(int idx, Action<Vertex<T>> visitor)
-        {
-            var hijos = AdjList[idx];
-            if (hijos.Count > 0)
-                Inorden(hijos[0].Destino, visitor);
-            visitor(Vertices[idx]);
-            for (int i = 1; i < hijos.Count; i++)
-                Inorden(hijos[i].Destino, visitor);
-        }
-
-        public void Postorden(int idx, Action<Vertex<T>> visitor)
-        {
-            foreach (var edge in AdjList[idx])
-                Postorden(edge.Destino, visitor);
-            visitor(Vertices[idx]);
-        }
-
-        public void BFS_All(Action<Vertex<T>> visitor)
-        {
-            ResetVisitados();
-            for (int i = 0; i < Vertices.Count; i++)
+            recolectados.Add(idx);
+            List<Arista> aristas = listaAdyacencia[idx];
+            for (int i = 0; i < aristas.Count; i++)
             {
-                if (!Vertices[i].Visitado)
+                preorden(aristas[i].Destino, recolectados);
+            }
+        }
+
+        public void inorden(int idx, List<int> recolectados)
+        {
+            List<Arista> aristas = listaAdyacencia[idx];
+            if (aristas.Count > 0)
+            {
+                inorden(aristas[0].Destino, recolectados);
+            }
+            recolectados.Add(idx);
+            for (int i = 1; i < aristas.Count; i++)
+            {
+                inorden(aristas[i].Destino, recolectados);
+            }
+        }
+
+        public void postorden(int idx, List<int> recolectados)
+        {
+            List<Arista> aristas = listaAdyacencia[idx];
+            for (int i = 0; i < aristas.Count; i++)
+            {
+                postorden(aristas[i].Destino, recolectados);
+            }
+            recolectados.Add(idx);
+        }
+
+        public void BFS_completo(List<int> recolectados)
+        {
+            resetearVisitados();
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                if (!vertices[i].Visitado)
                 {
-                    BFS(i, visitor);
+                    Cola<int> cola = new Cola<int>();
+                    cola.encolar(i);
+                    vertices[i].Visitado = true;
+
+                    while (cola.cantidadElementos() > 0)
+                    {
+                        int actual = cola.desencolar();
+                        recolectados.Add(actual);
+
+                        List<Arista> aristas = listaAdyacencia[actual];
+                        for (int j = 0; j < aristas.Count; j++)
+                        {
+                            int destino = aristas[j].Destino;
+                            if (!vertices[destino].Visitado)
+                            {
+                                vertices[destino].Visitado = true;
+                                cola.encolar(destino);
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        public void DFS_All(Action<Vertex<T>> visitor)
+        public void DFS_completo(List<int> recolectados)
         {
-            ResetVisitados();
-            for (int i = 0; i < Vertices.Count; i++)
+            resetearVisitados();
+            for (int i = 0; i < vertices.Count; i++)
             {
-                if (!Vertices[i].Visitado)
+                if (!vertices[i].Visitado)
                 {
-                    DFS_Recursivo(i, visitor);
+                    dfsRecursivo(i, recolectados);
                 }
             }
         }
