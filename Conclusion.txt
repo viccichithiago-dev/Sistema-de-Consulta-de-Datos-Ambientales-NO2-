@@ -1,0 +1,27 @@
+===========================================================================
+  CONCLUSION - Trabajo Final
+  Sistema de Consulta de Datos Ambientales NO2
+===========================================================================
+
+Hacer este trabajo nos sirvio para ver como se aplican en la practica
+las estructuras de datos y los algoritmos que vimos en clase. Armamos
+un arbol a partir de un CSV con mediciones de NO2, implementamos
+consultas para recorrerlo, y comparamos dos formas de ordenar resultados:
+Bubble Sort vs Heap.
+
+Lo mas importante que aprendimos es que las decisiones de diseno que
+parecen chicas tienen consecuencias grandes. Elegir guardar solo el
+padre de cada nodo (y no los hijos) hizo que todas las consultas sean
+O(n^2). Despues nos dimos cuenta de que con una lista de hijos por nodo
+hubiera sido mucho mas rapido.
+
+Tambien vimos que el Heap es mucho mejor que Bubble Sort para ordenar
+cuando hay muchos datos, y que una Cola implementada con List<T> es
+lenta porque RemoveAt(0) mueve todos los elementos.
+
+En resumen, el trabajo integro arboles, colas, heaps y archivos en una
+aplicacion que funciona, y nos dejo claro que la teoria de algoritmos
+no es solo para el parcial: define si un programa anda bien o mal.
+
+
+===========================================================================

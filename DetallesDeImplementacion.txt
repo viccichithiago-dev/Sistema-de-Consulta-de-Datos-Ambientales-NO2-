@@ -1,0 +1,152 @@
+===========================================================================
+  DETALLES DE IMPLEMENTACION
+  Sistema de Consulta de Datos Ambientales NO2
+===========================================================================
+
+1. ESTRUCTURA DEL ARBOL
+-------------------------------
+El arbol guarda los datos en cuatro listas:
+
+  - nodosArbol[] : los datos de cada nodo (texto, ocurrencia, descripcion)
+  - padres[] : el indice del padre de cada nodo (-1 para la raiz)
+  - raizIdx : el indice de la raiz (siempre 0)
+  - hijos[] : lista de hijos por nodo (agregada como mejora)
+
+Cada nodo Dato tiene ademas una List<int> hijos con los indices de
+sus hijos. Esto permite saber si un nodo tiene hijos en O(1) en vez
+de tener que recorrer toda la lista de padres.
+
+
+2. LAS CONSULTAS
+-------------------------------
+Consulta1 ("Todas las Predicciones"):
+  Busca todos los nodos que no tienen hijos y tienen ocurrencia > 0.
+  Los muestra con sangria segun su profundidad.
+
+Consulta2 ("Camino a Prediccion"):
+  Para cada hoja del arbol, sube hasta la raiz por los padres[]
+  y muestra el camino completo.
+
+Consulta3 ("Recorrido a Profundidad"):
+  Usa una Cola para recorrer el arbol por niveles (BFS).
+  Visita cada nodo una vez y muestra su nivel.
+
+Las tres consultas ahora son O(n) porque cada nodo tiene una lista
+de hijos guardada. Antes eran O(n^2) porque habia que recorrer toda
+la lista de padres para encontrar los hijos de cada nodo.
+
+
+3. BUSCAR CON OTRO VS BUSCAR CON HEAP
+-------------------------------
+BuscarConOtro:
+  Hace un BFS, junta todas las hojas en una lista, y las ordena
+  de mayor a menor con Bubble Sort. Despues toma las primeras N.
+  Problema: Bubble Sort es O(k^2), muy lento si hay muchas hojas.
+
+BuscarConHeap:
+  Hace un BFS pero en vez de guardar todo y ordenar despues,
+  va metiendo cada hoja en un Max-Heap (monticulo) a medida que
+  las encuentra. Cuando termina, extrae las N mas grandes.
+  Insertar y extraer del heap cuestan O(log n) cada una.
+  Es mucho mas rapido que Bubble Sort cuando hay muchos datos.
+
+
+4. LA COLA
+-------------------------------
+Problema: la Cola<T> original usaba List<T> internamente, y el metodo
+desencolar() hacia RemoveAt(0). En List<T>, sacar el primer elemento
+obliga a mover todos los demas una posicion. Eso es O(n).
+
+Solucion aplicada: se reemplazo por una cola circular con arreglo.
+En una cola circular, encolar y desencolar siempre son O(1)
+porque solo se mueven indices, no elementos. Si el buffer se llena,
+se duplica el tamaño automaticamente.
+
+
+5. PROBLEMAS Y SOLUCIONES
+-------------------------------
+1) CSV con caracteres raros
+   Los datos tenian acentos y simbolos que rompian el Split('-').
+   Solucion: RemoveSpecialCharacters() solo deja letras, numeros,
+   puntos, guiones bajos y espacios.
+
+2) Busquedas lentas (O(n^2))
+   Para saber si un nodo tiene hijos habia que recorrer padres[]
+   entero cada vez.
+   Solucion: se agrego una lista de hijos (List<int> hijos) en cada
+   nodo que se llena cuando se construye el arbol. Ahora preguntar
+   por hijos es O(1) y las consultas pasaron a O(n).
+
+3) Cola lenta
+   RemoveAt(0) movia todos los elementos en cada desencolar().
+   Solucion: se reemplazo por una cola circular con arreglo.
+   Encolar y desencolar ahora son O(1).
+
+4) Dato sin descripcion
+   Algunos nodos se creaban sin descripcion y daban error al
+   mostrarlos.
+   Solucion: agregar un constructor que ponga descripcion = ""
+   por defecto.
+
+5) Contador de ocurrencias no sumaba filas repetidas
+   Cuando el mismo periodo ya existia en el arbol, el codigo no
+   buscaba su indice y nunca incrementaba la ocurrencia. Solo
+   contaba la primera vez que aparecia cada periodo.
+   Solucion: se agrego un else que obtiene el indice del periodo
+   existente para poder incrementar la ocurrencia en cada fila.
+
+
+6. MEJORAS IMPLEMENTADAS
+-------------------------------
+- Lista de hijos por nodo: se agrego List<int> hijos a Dato, se
+  llena al construir el arbol. Las consultas pasaron de O(n^2) a O(n).
+- Cola circular: se reemplazo la Cola basada en List<T> por una
+  cola circular con arreglo. Encolar y desencolar son O(1).
+- Heap en BuscarConHeap: reemplazo del Bubble Sort O(k^2)
+  por Max-Heap O(k log k). Mucho mas rapido con muchos datos.
+- Refactor de Estrategia: metodos mas limpios, menos codigo
+  repetido, usando helpers.
+- Dato.cs: constructor con descripcion = "" por defecto para
+  evitar errores al mostrar nodos sin descripcion.
+- Graph.cs: reescrito entero. Se sacaron Action<T>, var,
+  genericos y nombres en ingles. Quedo con tipos explicitos,
+  for loops y nombres en espanol.
+- Form1: la opcion "Otro" se renombro a "Orden" en el ComboBox.
+- Form3: se cambio la fuente a Consolas, se agregaron colores
+  en el ListView, y se arreglo el warning CS0108.
+- Form2: se elimino una variable que no se usaba.
+- Bug fix: el contador de ocurrencias no sumaba filas repetidas
+  de un mismo periodo. Se corrigio en armarArbolDesdeDatos().
+
+7. MEJORAS POSIBLES (sin implementar)
+-------------------------------
+- Cargar el CSV en segundo plano para que la pantalla no se
+  congele mientras lee.
+- Agregar mas filtros de busqueda (por rango de ocurrencias,
+  por tipo geografico, etc.).
+
+
+8. OTROS PROBLEMAS ENCONTRADOS
+-------------------------------
+1) Variable sin usar en Form2
+   En Form2.OnShown() se crea "Estrategia estrategia = new Estrategia()"
+   pero nunca se usa. Los metodos se llaman por Backend.
+   Solucion: borrar esa linea.
+
+2) Datos viejos no se limpian al cambiar de dataset
+   Si el usuario vuelve a Inicio y selecciona otro archivo,
+   Backend.datos[] acumula los registros anteriores.
+   Solucion: limpiar Backend.datos antes de la carga.
+
+3) Graph.cs no se usa en ningun lado
+   La clase Grafo, Vertice y Arista no son referenciadas por
+   ningun otro archivo. Es codigo muerto.
+   Solucion: borrar el archivo si no se planea usar.
+
+4) Imports sin usar en Estrategia.cs
+   Tiene using de System.Diagnostics, System.Numerics,
+   System.Reflection y System.Windows.Forms que no se usan.
+   Solucion: borrar los using que sobran.
+
+
+===========================================================================

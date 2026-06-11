@@ -25,15 +25,7 @@ namespace tpfinal
 			
             for (int i = 0; i < totalNodos; i++)
             {
-                bool tieneHijos = false;
-                for (int j = 0; j < totalNodos; j++)
-                {
-                    if (padres[j] == i)
-                    {
-                        tieneHijos = true;
-                        break;
-                    }
-                }
+                bool tieneHijos = nodos[i].hijos.Count > 0;
 				
                 if (!tieneHijos && nodos[i].ocurrencia > 0)
                 {
@@ -77,15 +69,7 @@ namespace tpfinal
 			
             for (int i = 0; i < totalNodos; i++)
             {
-                bool tieneHijos = false;
-                for (int j = 0; j < totalNodos; j++)
-                {
-                    if (padres[j] == i)
-                    {
-                        tieneHijos = true;
-                        break;
-                    }
-                }
+                bool tieneHijos = nodos[i].hijos.Count > 0;
 				
                 if (!tieneHijos && nodos[i].ocurrencia > 0)
                 {
@@ -158,15 +142,7 @@ namespace tpfinal
                 }
 				
                 string marca = "";
-                bool tieneHijos = false;
-                for (int j = 0; j < nodos.Count; j++)
-                {
-                    if (padres[j] == actual)
-                    {
-                        tieneHijos = true;
-                        break;
-                    }
-                }
+                bool tieneHijos = nodos[actual].hijos.Count > 0;
                 if (!tieneHijos) marca = " [HOJA]";
 				
                 string sangria = "";
@@ -178,16 +154,8 @@ namespace tpfinal
                 sb.AppendLine(sangria + contadorVisitas + ". " + nodos[actual].texto + marca);
 				
                 // encolar hijos
-                List<int> hijos = new List<int>();
-                for (int j = nodos.Count - 1; j >= 0; j--)
-                {
-                    if (padres[j] == actual)
-                    {
-                        hijos.Add(j);
-                    }
-                }
-				
-                for (int h = 0; h < hijos.Count; h++)
+                List<int> hijos = nodos[actual].hijos;
+                for (int h = hijos.Count - 1; h >= 0; h--)
                 {
                     pilaRecorrido.encolar(hijos[h]);
                 }
@@ -218,15 +186,7 @@ namespace tpfinal
 				
                 if (nodos[idx].ocurrencia > 0)
                 {
-                    bool tieneHijos = false;
-                    for (int j = 0; j < nodos.Count; j++)
-                    {
-                        if (padres[j] == idx)
-                        {
-                            tieneHijos = true;
-                            break;
-                        }
-                    }
+                    bool tieneHijos = nodos[idx].hijos.Count > 0;
 					
                     if (!tieneHijos)
                     {
@@ -235,12 +195,10 @@ namespace tpfinal
                     }
                 }
 				
-                for (int j = 0; j < nodos.Count; j++)
+                List<int> hijos = nodos[idx].hijos;
+                for (int j = 0; j < hijos.Count; j++)
                 {
-                    if (padres[j] == idx)
-                    {
-                        cola.encolar(j);
-                    }
+                    cola.encolar(hijos[j]);
                 }
             }
 			
@@ -284,14 +242,11 @@ namespace tpfinal
                 if (procesados.Contains(idx)) continue;
                 procesados.Add(idx);
 				
-                bool esHoja = true;
-                for (int j = 0; j < nodos.Count; j++)
+                bool esHoja = nodos[idx].hijos.Count == 0;
+                List<int> hijos = nodos[idx].hijos;
+                for (int j = 0; j < hijos.Count; j++)
                 {
-                    if (padres[j] == idx)
-                    {
-                        esHoja = false;
-                        colaRecorrido.encolar(j);
-                    }
+                    colaRecorrido.encolar(hijos[j]);
                 }
 				
                 if (esHoja && nodos[idx].ocurrencia > 0)

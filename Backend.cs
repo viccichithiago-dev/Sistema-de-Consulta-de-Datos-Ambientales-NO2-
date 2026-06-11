@@ -48,6 +48,7 @@ namespace tpfinal
                     Dato nGeo = new Dato(0, geoTipo, "Tipo geografico");
                     nodosArbol.Add(nGeo);
                     padres.Add(raizIdx);
+                    nodosArbol[raizIdx].hijos.Add(cont);
                     idxGeo = cont;
                     indices.Add(cGeo, cont);
                     cont++;
@@ -63,6 +64,7 @@ namespace tpfinal
                     Dato nLug = new Dato(0, lugar, "Lugar: " + geoTipo);
                     nodosArbol.Add(nLug);
                     padres.Add(idxGeo);
+                    nodosArbol[idxGeo].hijos.Add(cont);
                     idxLugar = cont;
                     indices.Add(cLug, cont);
                     cont++;
@@ -78,11 +80,16 @@ namespace tpfinal
                     Dato nPer = new Dato(0, periodo, "Medicion en " + lugar);
                     nodosArbol.Add(nPer);
                     padres.Add(idxLugar);
+                    nodosArbol[idxLugar].hijos.Add(cont);
                     idxPeriodo = cont;
                     indices.Add(cPer, cont);
                     cont++;
                 }
-				
+                else
+                {
+                    idxPeriodo = indices[cPer];
+                }
+
                 if (idxPeriodo >= 0)
                 {
                     nodosArbol[idxPeriodo].ocurrencia++;

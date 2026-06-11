@@ -16,3 +16,6 @@ datasets/
 ## Temp/backup
 *.bak
 *.orig
+
+## Reserved Windows name
+nul
